@@ -1,0 +1,242 @@
+https://we.tl/t-cteEFRFXPD
+
+https://wetransfer.com/downloads/ee2481f40ebe1b88c46111e0c3db1eee20210224053745/9c25c3
+
+https://drive.google.com/file/d/1szDF9xbZLbOId2nwRzUPwob-Co-OGj7Y/view
+
+https://drive.google.com/file/d/1szDF9xbZLbOId2nwRzUPwob-Co-OGj7Y/view?usp=sharing
+
+Open PowerBI Desktop :
+
+File > Options and Settings > 
+
+Current File 
+
+Data Load
+
+Under "Relationships" > Uncheck on "Auto Detect new relationships ..."
+
+Regional Settings > English US
+
+Click OK
+
+-----------
+
+Home > Get Data > Text/CSV
+
+Click on Excel > Click on Connect > Open "Mega Market .... " > Clcik on "Customers ..." > Click Open
+
+
+Navigator > Display Options > Select "Customers"..
+
+Transform Data
+
+In the "Name" make "d-Customers"
+
+Merge column > Add > Full Name .. Now Full Name is coming in the table (as a last column)
+
+Select Full Name Column ->R.Click->Transform->Capitalize each word option
+
+
+Click on "Birth Date" column and apply year using "Date" field.
+Add Column --> Date --> Year --> Year
+
+Click on Email Address 
+Add Column --> Extract --> Text Before Delimiter > type "@" in the Delimiter and click OK
+Change the column title to "UserName" after that.
+
+Home > Click on "Close and Apply"
+
+Click "Save" or "Ctrl+S" and name it as DIAD 25 Feb > Save
+
+----------------------------
+
+Home > Get Data > Excel > Date.xslx > Click open
+
+Under Properties > Name > "d-Calender" 
+
+Add Column > Date > Day > Name of Day
+
+Keep the Date column selected
+
+Add column > Date > Month > Start of Month
+
+Add column > Date > Month > Name of Month 
+
+Add column  > Year > Year
+
+-----------------------------
+
+Home > New Source > Excel > Select Product Category > Click on Product Category and click ok
+
+Change the column name to "d-category"
+
+--------------------------------
+
+
+home > select "Product.xslx" > Open
+
+in the display click Product Detail and click ok
+
+Name "d-Product"
+
+add column->standard->percentage > write 90 > Click Ok
+Now we have new column > Change the name to "DiscountedPrice"
+-------------------------
+
+Home> New Source > Excel > Product Subcategory > Click Ok
+Check "Product Subcategory" click Ok
+
+Change the name to "d-Sub-Category"
+
+----------
+
+Home> New Source > Excel > returns.xslx
+Select "Returns" Click ok
+Name "f-Returns"
+
+---------------
+
+Home> New Source > Excel > "Territory key.xslx"
+Check "Sheet 1" > OK
+Name "d-Territory"
+
+-----------------------------
+Go to https://drive.google.com/file/d/1szDF9xbZLbOId2nwRzUPwob-Co-OGj7Y/view?usp=sharing -
+Make sure we have "Zone" folder. If not, create "Zone" folder and Put all the East, North, south, West.xslx files here.
+
+Home> New Source > Folder > Connect > Zone
+
+Click > Combine & Transform Data
+
+Go to comi=bine Files > Display options > Select the Partner [1] Clcik ok
+
+Right clcik on Data column and clcik on Remob=ve othe columns\
+
+Now click on "data" column arrows > Click Ok
+
+Now all the data appears
+
+Use First Row Headers
+
+Click on Zone column and uncheck "Zone" field click ok
+
+Click on "Close and Apply"
+
+
+-------------------------------------------------------
+-------------------------------------------------------
+
+
+https://we.tl/t-aw4FBh6qVa
+
+Go to d-Calender > Column > In the title bar > :
+
+Short Month = LEFT('d-Calendar'[Month Name],3)
+
+Go to Weekend :
+
+Weekend = IF(OR('d-Calendar'[Day Name] = "Saturday",'d-Calendar'[Day Name] = "Sunday"),"Yes","No")
+
+Go to d-Customers:
+Age = YEAR(TODAY())-'d-Customers'[Birth Year]
+
+Check the parent:
+Parent = IF('d-Customers'[TotalChildren]>0,"Yes","No")
+
+Target Customer : Income >50K and Married
+Target Cust. = IF(AND('d-Customers'[MaritalStatus] = "M",'d-Customers'[AnnualIncome] > 50000),"Yes","No")
+
+--------------
+
+Revenue = 'f-Sales'[Units] * RELATED('d-Product'[ProductPrice])
+
+----------------------
+
+Lets go to Report 
+
+Return Rate = SUM('f-Returns'[ReturnQuantity])/SUM('f-Sales'[Units])
+
+Total Units = SUM('f-Sales'[Units])
+
+
+----------------------------------
+
+
+Home > Enter Data > All Measures > LOAD
+
+Click on f-Returns:
+Click one measure
+Measure toools > Hom table > change it to "all measures"
+
+Click another measure
+Measure toools > Hom table > change it to "all measures"
+
+Repeat for other measures under "f-Returns"
+
+------------------
+
+Click on All measures > Right Click on "Columns" and Delete 
+
+Which is not required
+
+------
+
+Total units sold at East zone:
+Uints Sold East Zone = CALCULATE([Total Units],'d-Territory'[Zone] = "East")
+
+
+Units Sold for Cust.age < 50 Years:
+Units Sold Age <50 = CALCULATE([Total Units],'d-Customers'[Age] <50)
+
+Return Quantity on weekend:
+Return Qty on Weekend = CALCULATE([Total Return Qty],'d-Calender'[Weekend]="Yes")  
+
+Total Revenue:
+Total Revenue = SUMX('f-Sales', 'f-Sales'[Units] * RELATED('d-Product'[ProductPrice]))
+
+Total Cost:
+Total Cost = SUMX('f-Sales',[Total Units] * RELATED('d-Product'[ProductCost]))
+
+Total Profit:
+Total Profit = [Total Revenue] - [Total Cost]
+
+----------------------------------
+
+Previous Month Revenue = CALCULATE([Total Revenue],DATEADD('d-Calendar'[Date],-1,MONTH))
+
+Target Revenue = [Previous Month Revenue] * 1.02
+
+Previous Month Units Sold = CALCULATE([Total Units],DATEADD('d-Calendar'[Date],-1,MONTH))
+
+Target Units Sold = [Previous Month Units Sold] * 1.02
+
+https://dax.guide/
+
+Target Revenue = [Previous Month Revenue] * 1.02
+
+
+--------------------
+
+Top Managment Report :
+
+Click on "Search" icon below "Visualizations" and make the slice > OFF
+
+
+Visualizations > Get More Visuals > 
+
+Insert " scroller" from market place
+
+Now in the "Category" (Sub Category Name), "Measure Absolute" (Totla Units), "Measure Deviation" (Target Units Sold) add these () fields.
+
+-----------------
+
+https://powerbi.microsoft.com/en-us/pricing/#powerbi-comparison-table
+
+https://www.youtube.com/channel/UCFAr3FQxRhSzVNOD3vq1gMQ
+
+
+Trainee Power BI Dektop Version : Version: 2.90.782.0 64-bit (February 2021)
+
+My Power BI Dektop Version : Version: 2.83.5894.961 64-bit (July 2020)
+
